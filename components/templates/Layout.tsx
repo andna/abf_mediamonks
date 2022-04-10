@@ -103,7 +103,7 @@ const Layout: React.FC<Props> = ({
                         </span>
                 </div>
             </AppBar>
-            <Container component="main" maxWidth="xs" sx={styles.content}>
+            <Container component="main" sx={styles.content}>
                 {children}
             </Container>
         </ThemeProvider>

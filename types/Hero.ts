@@ -1,14 +1,5 @@
-interface InnerItems {
-    name: string;
-    resourceURI: string;
-}
+import {InnerData} from "./InnerData";
 
-interface InnerData {
-    available: number;
-    collectionURI: string;
-    items: InnerItems[];
-    returned: number;
-}
 
 interface Thumbnail{
     extension: string;
