@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
-import { Container, AppBar, Typography, Menu, MenuItem } from '@mui/material';
-import React, { useState, useEffect } from "react";
+import { Container } from '@mui/material';
+import React, { useState } from "react";
 import {Theme} from "@mui/system";
 import colors from "../atoms/colors";
 import AppBarHome from "../organisms/AppBarHome";
@@ -58,6 +58,9 @@ const Layout: React.FC<Props> = ({
     const themeLight : Theme = createTheme({
         palette: {
             //type: 'light',
+            primary: {
+                main: colors.blueBright,
+            },
             background: {
                 default: colors.lightGray,
             },

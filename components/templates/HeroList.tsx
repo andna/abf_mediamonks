@@ -115,7 +115,7 @@ const HeroList: React.FC<Props> = ({ searchTerm }) => {
                         ))}
                     </Grid>
                 </InfiniteScroll>
-                {noHeroFound && heroes.length > 0 &&
+                {noHeroFound && heroes.length > 0 && searchTerm &&
                     <>
                         <h3>Nothing found for &#39;{searchTerm}&#39;
                         {loading && <>so far.</>}</h3>

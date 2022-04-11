@@ -1,7 +1,5 @@
-interface InnerItems {
-    name: string;
-    resourceURI: string;
-}
+import {InnerItems} from "./InnerItems";
+
 
 export interface InnerData {
     available: number;

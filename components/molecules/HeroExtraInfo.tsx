@@ -2,39 +2,18 @@ import React from "react";
 import {Hero} from "../../types/Hero";
 import {Badge, Grid, Tooltip, Typography} from "@mui/material";
 import {ExtraInfo} from "../../types/ExtraInfo";
-import {InnerData} from "../../types/InnerData";
-import colors from "../atoms/colors";
 
 
 type Props = {
     hero: Hero;
+    extraInfo: ExtraInfo[];
 }
 
 
-const extraInfo: ExtraInfo[] = [
-    {
-        id: 'comics',
-        iconId: 'C',
-        available: 0,
-    },
-    {
-        id: 'series',
-        iconId: 'S',
-        available: 0,
-    },
-    {
-        id: 'stories',
-        iconId: 'St',
-        available: 0,
-    }
-]
 
 
-const HeroExtraInfo: React.FC<Props> = ({hero }) => {
-    extraInfo.forEach(info => {
-        const heroInfo = hero[info.id as keyof Hero] as InnerData;
-        info.available = heroInfo.available;
-    })
+const HeroExtraInfo: React.FC<Props> = ({hero, extraInfo }) => {
+
 
     return (
         <Grid container justifyContent="center" spacing={3}
