@@ -1,8 +1,9 @@
 import React from "react";
 import {Hero} from "../../types/Hero";
-import {Badge, Grid, Tooltip} from "@mui/material";
+import {Badge, Grid, Tooltip, Typography} from "@mui/material";
 import {ExtraInfo} from "../../types/ExtraInfo";
 import {InnerData} from "../../types/InnerData";
+import colors from "../atoms/colors";
 
 
 type Props = {
@@ -36,17 +37,16 @@ const HeroExtraInfo: React.FC<Props> = ({hero }) => {
     })
 
     return (
-        <Grid container justifyContent="center" spacing={2}>
+        <Grid container justifyContent="center" spacing={3}
+              sx={{ml: '-16px'}}>
             {extraInfo.map((info : ExtraInfo) => (
                     <Grid key={info.id} item sx={{cursor:'help'}}>
-                        {info.available > 0 &&
-                        <Tooltip title={`${hero.name} has ${info.available} ${info.id}`} placement="top">
+                        <Tooltip title={`${hero.name} has ${info.available} ${info.id} listed`}
+                                 placement="top">
                             <Badge badgeContent={info.available} color="default">
-                                {info.iconId}
+                                <Typography color="secondary">{info.iconId}</Typography>
                             </Badge>
                         </Tooltip>
-
-                        }
                     </Grid>
                 ))
             }

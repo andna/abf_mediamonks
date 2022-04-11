@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Container, AppBar, Typography, Menu, MenuItem } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import {Theme} from "@mui/system";
-import Image from 'next/image'
+import colors from "../atoms/colors";
 import AppBarHome from "../organisms/AppBarHome";
 
 
@@ -13,29 +13,14 @@ type Props = {
 }
 const styles = {
 
-    appbar: {
-        padding: '8px',
-        display: 'flex',
-        color: '#b0bbf8',
-        fontSize: '0.8em',
-        //userSelect: 'none'
-    },
     footer: {
-        //textAlign: 'center',
+        textAlign: 'center' as 'center',
         zIndex: -1,
-       // position: 'absolute',
+        position: 'absolute' as 'absolute',
         bottom: 0,
         width: '100%',
         fontSize: '0.6em',
-        color: '#666',
-    },
-    github: {
-        textDecoration: 'underline'
-    },
-    switcher: {
-        cursor: 'pointer',
-        paddingLeft: '16px',
-        filter: 'grayscale(1) contrast(0.5) brightness(1.3)',
+        color: colors.footerColor,
     },
     content: {
         marginTop: 8,
@@ -55,18 +40,18 @@ const Layout: React.FC<Props> = ({
         palette: {
             //type: 'dark',
             primary: {
-                main: '#3f51b5',
+                main: colors.blueBright,
             },
             secondary: {
-                main: '#f50057',
+                main: colors.redBright,
             },
             background: {
-                default: '#1f222c',
-                paper: '#2a2e3d',
+                default: colors.blueDark,
+                paper: colors.bluePale,
             },
             text: {
-                primary: '#ffffff',
-                secondary: '#ffffff',
+                primary: colors.white,
+                secondary: colors.white,
             },
         },
     });
@@ -74,12 +59,15 @@ const Layout: React.FC<Props> = ({
         palette: {
             //type: 'light',
             background: {
-                default: '#d6dce6',
+                default: colors.lightGray,
+            },
+            text: {
+                primary: colors.textLight,
             },
         },
     });
 
-    const title : string = 'ABF - Media.Monks Challenge';
+    const title : string = 'ABF - Marvel Monks';
 
     return <div>
         <Head>
@@ -88,18 +76,21 @@ const Layout: React.FC<Props> = ({
             <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <ThemeProvider theme={isDarkMode ? themeDark : themeLight}>
-            <CssBaseline />
-            <AppBarHome isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} title={title}/>
-            <Container component="main" sx={styles.content}>
-                {children}
-            </Container>
-        </ThemeProvider>
-        <footer style={styles.footer}>
+        <main>
+            <ThemeProvider theme={isDarkMode ? themeDark : themeLight}>
+                <CssBaseline />
+                <AppBarHome isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} title={title}/>
+                <Container component="main" sx={styles.content}>
+                    {children}
+                </Container>
+            </ThemeProvider>
+        </main>
+        <footer>
             <a
                 href="https://github.com/andna/abf_mediamonks"
                 target="_blank"
                 rel="noopener noreferrer"
+                style={styles.footer}
             >
                 By Andres Bastidas Fierro @ 2022
             </a>

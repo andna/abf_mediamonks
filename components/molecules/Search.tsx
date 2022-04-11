@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, InputAdornment, TextField} from "@mui/material";
+import {Box, InputAdornment, TextField, useTheme} from "@mui/material";
 import {Search as SearchIcon, Close} from "@mui/icons-material";
 
 const styles = {
@@ -9,6 +9,15 @@ const styles = {
     },
     input: {
         height: 40
+    },
+    container: {
+        position: 'fixed',
+         borderRadius: 3,
+        padding: 1.6,
+        zIndex: 2,
+        top: 35,
+        width: '100%',
+        textAlign: 'center',
     }
 }
 
@@ -19,11 +28,14 @@ type Props = {
 }
 const Search: React.FC<Props> = ({ searchTerm, handleSearch, eraseSearch }) => {
 
+    const theme = useTheme();
     return (
         <Box
             component="form"
             sx={{
-                '& > :not(style)': { m: 1, mb: 8, width: '35ch' },
+                '& > :not(style)': { mb: 1, width: '35ch' },
+                ...styles.container,
+                background: theme.palette.background.default
             }}
             noValidate
             autoComplete="off"

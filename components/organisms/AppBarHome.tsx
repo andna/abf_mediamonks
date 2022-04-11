@@ -1,15 +1,16 @@
 import React from "react";
-import {AppBar, Typography} from "@mui/material";
+import {AppBar, Typography, Tooltip} from "@mui/material";
 import Image from "next/image";
+import colors from "../atoms/colors";
 
 const styles = {
 
     appbar: {
         padding: '8px',
         display: 'flex',
-        color: '#b0bbf8',
+        color: colors.appbarColor,
         fontSize: '0.8em',
-        //userSelect: 'none'
+        userSelect: 'none' as 'none',
     },
     switcher: {
         cursor: 'pointer',
@@ -34,11 +35,13 @@ const AppBarHome: React.FC<Props> = ({isDarkMode, setIsDarkMode, title }) => {
                 <Typography component="div" sx={{ flexGrow: 1 }}>
                     { title }
                 </Typography>
+                <Tooltip title={`Change to ${isDarkMode ? `Light` : `Dark`} theme`}
+                         placement="left">
                 <span style={styles.switcher}
-                      onClick={() => setIsDarkMode(!isDarkMode)}
-                      title={`Change to ${isDarkMode ? `Light` : `Dark`} theme`}>
+                      onClick={() => setIsDarkMode(!isDarkMode)}>
                             {isDarkMode ? ' 🌙' : ' 🔆'}
                         </span>
+                </Tooltip>
             </div>
         </AppBar>
     )

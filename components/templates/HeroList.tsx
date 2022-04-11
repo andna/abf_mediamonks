@@ -3,20 +3,22 @@ import {Hero} from "../../types/Hero";
 import HeroCard from "../organisms/HeroCard";
 import {Grid} from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Loader from "../atoms/loader";
 
 type Props = {
     searchTerm: string;
-    setLoading: (arg0: boolean) => any;
 }
 
-const HeroList: React.FC<Props> = ({ searchTerm, setLoading }) => {
+const HeroList: React.FC<Props> = ({ searchTerm }) => {
 
 
     const maxOffset = 60;
     const [totalHeroQuantity, setTotalHeroQuantity] = useState<number>(0);
+    const [noHeroFound, setNoHeroFound] = useState<boolean>(false);
     const [heroes, setHeroes] = useState<Hero[]>([]);
     const [filteredHeroes, setFilteredHeroes] = useState<Hero[]>([]);
     const [shownHeroes, setShownHeroes] = useState<Hero[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getHeroes(0);
@@ -77,7 +79,6 @@ const HeroList: React.FC<Props> = ({ searchTerm, setLoading }) => {
     }
 
     const showMoreHeroes = () => {
-        console.log('aaa',filteredHeroes)
         setShownHeroes(oldShownHeroes => {
             const heroesSlice = filteredHeroes.slice(oldShownHeroes.length, oldShownHeroes.length + maxOffset)
             return [...oldShownHeroes, ...heroesSlice];
@@ -92,24 +93,37 @@ const HeroList: React.FC<Props> = ({ searchTerm, setLoading }) => {
         setFilteredHeroes(newFilteredHeroes);
         const slicedHeroes = newFilteredHeroes.slice(0, maxOffset);
         setShownHeroes(slicedHeroes);
+        setNoHeroFound(newFilteredHeroes.length === 0)
     }
 
 
     return (
-        <Grid container justifyContent="center" spacing={2}>
-            <InfiniteScroll
-                dataLength={shownHeroes.length}
-                next={showMoreHeroes}
-                hasMore={true}
-                loader={""}
-            >
-                {shownHeroes.map((hero: Hero) => (
-                    <Grid key={hero.id} item>
-                        <HeroCard  hero={hero}></HeroCard>
+            <>
+                <InfiniteScroll
+                    dataLength={shownHeroes.length}
+                    next={showMoreHeroes}
+                    hasMore={true}
+                    loader={""}
+                    scrollThreshold={1}
+                    style={{ overflow: "unset", paddingTop: "64px" }}
+                >
+                    <Grid container justifyContent="center" spacing={2}>
+                        {shownHeroes.map((hero: Hero) => (
+                            <Grid key={hero.id} item>
+                                <HeroCard  hero={hero}></HeroCard>
+                            </Grid>
+                        ))}
                     </Grid>
-                ))}
-            </InfiniteScroll>
-        </Grid>
+                </InfiniteScroll>
+                {noHeroFound && heroes.length > 0 &&
+                    <>
+                        <h3>Nothing found for &#39;{searchTerm}&#39;
+                        {loading && <>so far.</>}</h3>
+                        {loading && <p>Please wait until all the data is loaded and then search again.</p>}
+                    </>
+                }
+                {loading && <Loader />}
+            </>
     )
 }
 
