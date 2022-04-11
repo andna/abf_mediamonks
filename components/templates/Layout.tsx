@@ -92,7 +92,7 @@ const Layout: React.FC<Props> = ({
             <AppBar>
                 <div style={styles.appbar}>
 
-                    <Image src="/arcLogo.svg" alt="Vercel Logo" width={72} height={16} />
+                    {false && <Image src="/arcLogo.svg" alt="Vercel Logo" width={72} height={16} />}
                     <Typography component="div" sx={{ flexGrow: 1 }}>
                         { title }
                     </Typography>

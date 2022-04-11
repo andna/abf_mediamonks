@@ -38,7 +38,7 @@ const HeroExtraInfo: React.FC<Props> = ({hero }) => {
     return (
         <Grid container justifyContent="center" spacing={2}>
             {extraInfo.map((info : ExtraInfo) => (
-                    <Grid key={hero.name} item sx={{cursor:'help'}}>
+                    <Grid key={info.id} item sx={{cursor:'help'}}>
                         {info.available > 0 &&
                         <Tooltip title={`${hero.name} has ${info.available} ${info.id}`} placement="top">
                             <Badge badgeContent={info.available} color="default">

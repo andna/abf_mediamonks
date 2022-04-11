@@ -16,18 +16,23 @@ const styles = {
         flex: 1,
         justifyContent: 'space-between',
     },
-    avatar: { bgcolor: '#fff' },
-    name: { fontWeight: 800,
+    avatar: {bgcolor: '#fff'},
+    name: {
+        fontWeight: 800,
         flex: 1,
         textAlign: 'left'
     },
-
 }
 
 
 const HeroList: React.FC<Props> = ({hero}) => {
 
-    const heroThumbnail = `${hero.thumbnail.path}.${hero.thumbnail.extension}`
+    const notFoundThumb = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available';
+    const notFoundThumb2 = 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708';
+    324
+    const heroThumbnailProp = (hero.thumbnail.path === notFoundThumb) || (hero.thumbnail.path === notFoundThumb2)
+        ? {}
+        : {src : `${hero.thumbnail.path}.${hero.thumbnail.extension}`};
 
     const links = hero.urls;
     const wikiLink = links.find(link => link.type === "wiki")?.url;
@@ -36,14 +41,17 @@ const HeroList: React.FC<Props> = ({hero}) => {
         <CardContent sx={styles.cardContent}>
             <Avatar alt={hero.name}
                     sx={styles.avatar}
-                    src={heroThumbnail}/>
+                    {...heroThumbnailProp}
+            >
+                {!heroThumbnailProp.src && hero.name.slice(0, 2)}
+            </Avatar>
             <Typography variant={'h6'}
                         sx={styles.name}
             >
                 {hero.name}
             </Typography>
             {wikiLink &&
-                <Tooltip title={`Go to ${hero.name}'s Wiki`}  placement="top">
+                <Tooltip title={`Go to ${hero.name}'s Wiki`} placement="top">
                     <a href={wikiLink} target="_blank" rel="noreferrer">↗️</a>
                 </Tooltip>
             }
