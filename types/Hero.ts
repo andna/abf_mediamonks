@@ -23,4 +23,5 @@ export interface Hero{
     stories: InnerData;
     thumbnail: Thumbnail;
     urls: Url[];
+    searchableString: string;
 }

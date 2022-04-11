@@ -5,6 +5,7 @@ import { Container, AppBar, Typography, Menu, MenuItem } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import {Theme} from "@mui/system";
 import Image from 'next/image'
+import AppBarHome from "../organisms/AppBarHome";
 
 
 type Props = {
@@ -89,20 +90,7 @@ const Layout: React.FC<Props> = ({
 
         <ThemeProvider theme={isDarkMode ? themeDark : themeLight}>
             <CssBaseline />
-            <AppBar>
-                <div style={styles.appbar}>
-
-                    {false && <Image src="/arcLogo.svg" alt="Vercel Logo" width={72} height={16} />}
-                    <Typography component="div" sx={{ flexGrow: 1 }}>
-                        { title }
-                    </Typography>
-                    <span style={styles.switcher}
-                          onClick={() => setIsDarkMode(!isDarkMode)}
-                          title={`Change to ${isDarkMode ? `Light` : `Dark`} theme`}>
-                            {isDarkMode ? ' 🌙' : ' 🔆'}
-                        </span>
-                </div>
-            </AppBar>
+            <AppBarHome isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} title={title}/>
             <Container component="main" sx={styles.content}>
                 {children}
             </Container>

@@ -1,7 +1,6 @@
 import React from "react";
 import {Hero} from "../../types/Hero";
-import {Card, Badge, Button, CardActions, CardContent, CardMedia, Typography, Avatar, Tooltip} from "@mui/material";
-import Link from 'next/link'
+import {Card, Badge, Button, CardActions, CardContent, Typography, Avatar, Tooltip} from "@mui/material";
 import HeroExtraInfo from "../molecules/HeroExtraInfo";
 
 type Props = {
@@ -25,11 +24,10 @@ const styles = {
 }
 
 
-const HeroList: React.FC<Props> = ({hero}) => {
+const HeroCard: React.FC<Props> = ({hero}) => {
 
     const notFoundThumb = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available';
     const notFoundThumb2 = 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708';
-    324
     const heroThumbnailProp = (hero.thumbnail.path === notFoundThumb) || (hero.thumbnail.path === notFoundThumb2)
         ? {}
         : {src : `${hero.thumbnail.path}.${hero.thumbnail.extension}`};
@@ -65,10 +63,10 @@ const HeroList: React.FC<Props> = ({hero}) => {
             <Button variant="contained"
                     sx={{marginLeft: "auto",}}
             >
-                View Details
+                Details
             </Button>
         </CardActions>
     </Card>
 }
 
-export default HeroList;
+export default HeroCard;
