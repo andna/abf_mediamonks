@@ -11,7 +11,6 @@ const styles = {
     appbar: {
         padding: '8px',
         display: 'flex',
-        color: colors.appbarColor,
         fontSize: '0.8em',
         userSelect: 'none' as 'none',
     },
@@ -31,24 +30,25 @@ type Props = {
     isDarkMode: boolean;
     setIsDarkMode: (isDarkMode : boolean) => any;
     title: string;
+    isHome: boolean;
 }
-const AppBarHome: React.FC<Props> = ({isDarkMode, setIsDarkMode, title }) => {
-
-
-    const { asPath } = useRouter()
+const AppBarHome: React.FC<Props> = ({isDarkMode, setIsDarkMode, title, isHome }) => {
 
     return (
         <AppBar>
             <div style={styles.appbar}>
 
-                {asPath === "/" ? <></> :
-
+                {isHome
+                    ?
+                    <></>
+                    :
                     <Link href={`/`}>
                         <Close style={styles.backer} />
                     </Link>
                 }
-                {false && <Image src="/arcLogo.svg" alt="Vercel Logo" width={72} height={16} />}
-                <Typography component="div" sx={{ flexGrow: 1 }}>
+
+                <Image src="/marvelMonkslogo.svg" alt={title} width={40} height={16}/>
+                <Typography component="div" sx={{ flexGrow: 1, fontWeight: 800, }}>
                     { title }
                 </Typography>
                 <Tooltip title={`Change to ${isDarkMode ? `Light` : `Dark`} theme`}

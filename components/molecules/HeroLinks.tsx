@@ -1,6 +1,5 @@
 import React from "react";
-import {Hero} from "../../types/Hero";
-import {Accordion, AccordionDetails, AccordionSummary, Badge, Grid, Tooltip, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Badge, Grid, Tooltip, Typography, useTheme} from "@mui/material";
 
 import {styled} from "@mui/material/styles";
 import colors from "../atoms/colors";
@@ -17,6 +16,7 @@ type Props = {
 
 const HeroLinks: React.FC<Props> = ({ extraInfo }) => {
 
+    const theme = useTheme();
     const AccordionRoot = styled(Accordion)({
         margin: "16px 0",
         boxShadow: "0px 3px 6px 1px rgba(0,0,0,0.15)",
@@ -36,21 +36,38 @@ const HeroLinks: React.FC<Props> = ({ extraInfo }) => {
         },
     });
 
+    const styles = {
+        icon: {
+            margin: "0px 8px 0 -8px",
+            position: "relative" as "relative",
+            top: 5
+        },
+        name: {
+            textTransform: 'capitalize' as 'capitalize'
+        },
+        number: {
+            color: theme.palette.secondary.main
+        }
+    }
+
     return (
         <>
         {extraInfo.map((info : ExtraInfo) => (
             <AccordionRoot
                 key={info.id}
                 elevation={3}
+                disabled={info.available === 0}
             >
                 <AccordionSummaryContainer expandIcon={<ExpandMoreIcon />}>
-                    <span>
-                        <span style={{textTransform:'capitalize'}}>
+                    <b>
+                        <span style={styles.icon}>{info.iconId}</span>
+                        {' '}
+                        <span style={styles.name}>
                             {info.id}
                         </span>
                         {' '}
-                        <small><small>({info.available})</small></small>
-                    </span>
+                        <span style={styles.number}>{info.available}</span>
+                    </b>
                 </AccordionSummaryContainer>
                 <AccordionDetails>
                     <ul>

@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Loader from "../../components/atoms/loader";
 import {Hero} from "../../types/Hero";
 import HeroCard from "../../components/organisms/HeroCard";
+import Head from 'next/head'
 
 const HeroPage = () => {
     const router = useRouter()
@@ -44,7 +45,13 @@ const HeroPage = () => {
 
     return <>
         {loading && <Loader />}
-        {hero && hero.name && <HeroCard hero={hero} isPage/>}
+        {hero && hero.name && <>
+            <Head>
+                <title>{hero.name}</title>
+            </Head>
+            <HeroCard hero={hero} isPage/>
+
+        </>}
     </>
 }
 

@@ -6,7 +6,7 @@ const colors = {
     blueDark: '#1f222c',
     bluePale: '#2a2e3d',
     textLight: '#4a4d65',
-    redBright: '#9fc25d',
+    secondary: '#eb7171',
     white: '#ffffff',
     lightGray: '#d6dce6'
 }

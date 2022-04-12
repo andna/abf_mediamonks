@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import {Theme} from "@mui/system";
 import colors from "../atoms/colors";
 import AppBarHome from "../organisms/AppBarHome";
+import {useRouter} from "next/router";
 
 
 type Props = {
@@ -16,10 +17,11 @@ const styles = {
     footer: {
         textAlign: 'center' as 'center',
         zIndex: -1,
-        position: 'absolute' as 'absolute',
         bottom: 0,
         width: '100%',
         fontSize: '0.6em',
+        display: 'block',
+        marginTop: 100,
         color: colors.footerColor,
     },
     content: {
@@ -43,7 +45,7 @@ const Layout: React.FC<Props> = ({
                 main: colors.blueBright,
             },
             secondary: {
-                main: colors.redBright,
+                main: colors.secondary,
             },
             background: {
                 default: colors.blueDark,
@@ -61,6 +63,9 @@ const Layout: React.FC<Props> = ({
             primary: {
                 main: colors.blueBright,
             },
+            secondary: {
+                main: colors.secondary,
+            },
             background: {
                 default: colors.lightGray,
             },
@@ -70,7 +75,9 @@ const Layout: React.FC<Props> = ({
         },
     });
 
-    const title : string = 'ABF - Marvel Monks';
+    const title : string = 'marvel.monks by abf';
+
+    const { asPath } = useRouter()
 
     return <div>
         <Head>
@@ -82,7 +89,11 @@ const Layout: React.FC<Props> = ({
         <main>
             <ThemeProvider theme={isDarkMode ? themeDark : themeLight}>
                 <CssBaseline />
-                <AppBarHome isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} title={title}/>
+                <AppBarHome
+                    isHome={asPath === '/'}
+                    isDarkMode={isDarkMode}
+                    setIsDarkMode={setIsDarkMode}
+                    title={asPath === '/' ? title : 'Hero'}/>
                 <Container component="main" sx={styles.content}>
                     {children}
                 </Container>
@@ -96,6 +107,8 @@ const Layout: React.FC<Props> = ({
                 style={styles.footer}
             >
                 By Andres Bastidas Fierro @ 2022
+                <br/>
+                Data provided by Marvel. © 2014 Marvel
             </a>
         </footer>
     </div>

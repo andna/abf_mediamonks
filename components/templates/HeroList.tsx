@@ -118,7 +118,7 @@ const HeroList: React.FC<Props> = ({ searchTerm }) => {
                 {noHeroFound && heroes.length > 0 && searchTerm &&
                     <>
                         <h3>Nothing found for &#39;{searchTerm}&#39;
-                        {loading && <>so far.</>}</h3>
+                        {loading && <> so far.</>}</h3>
                         {loading && <p>Please wait until all the data is loaded and then search again.</p>}
                     </>
                 }
