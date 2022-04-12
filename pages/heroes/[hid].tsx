@@ -49,7 +49,7 @@ const HeroPage = () => {
             <Head>
                 <title>{hero.name}</title>
             </Head>
-            <HeroCard hero={hero} isPage/>
+            <HeroCard isFilteredByFavorites={false} hero={hero} isPage/>
 
         </>}
     </>
