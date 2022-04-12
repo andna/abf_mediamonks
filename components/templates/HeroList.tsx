@@ -7,9 +7,10 @@ import Loader from "../atoms/loader";
 
 type Props = {
     searchTerm: string;
+    isFilteredByFavorites: boolean;
 }
 
-const HeroList: React.FC<Props> = ({ searchTerm }) => {
+const HeroList: React.FC<Props> = ({ searchTerm, isFilteredByFavorites }) => {
 
 
     const maxOffset = 60;
@@ -109,9 +110,9 @@ const HeroList: React.FC<Props> = ({ searchTerm }) => {
                 >
                     <Grid container justifyContent="center" spacing={2}>
                         {shownHeroes.map((hero: Hero) => (
-                            <Grid key={hero.id} item>
-                                <HeroCard  hero={hero}></HeroCard>
-                            </Grid>
+                            <HeroCard key={hero.id}
+                                      isFilteredByFavorites={isFilteredByFavorites}
+                                      hero={hero} />
                         ))}
                     </Grid>
                 </InfiniteScroll>

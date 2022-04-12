@@ -8,6 +8,7 @@ import Loader from "../components/atoms/loader";
 export default function Home({ }) {
 
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [isFilteredByFavorites, setIsFilteredByFavorites] = useState<boolean>(false);
 
     const handleSearch = (event : React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -16,8 +17,11 @@ export default function Home({ }) {
         <>
             <Search searchTerm={searchTerm}
                     eraseSearch={() => setSearchTerm("")}
+                    isFilteredByFavorite={isFilteredByFavorites}
+                    setFilterByFavorite={() => setIsFilteredByFavorites(!isFilteredByFavorites)}
                     handleSearch={handleSearch}/>
-            <HeroList searchTerm={searchTerm}/>
+            <HeroList isFilteredByFavorites={isFilteredByFavorites}
+                      searchTerm={searchTerm}/>
         </>
     )
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import {Box, InputAdornment, TextField, useTheme} from "@mui/material";
-import {Search as SearchIcon, Close} from "@mui/icons-material";
+import {Box, InputAdornment, TextField, Tooltip, useTheme} from "@mui/material";
+import {Search as SearchIcon, Close, Star, StarBorderOutlined} from "@mui/icons-material";
 
 const styles = {
     endAdorment : {
@@ -8,9 +8,10 @@ const styles = {
         cursor: 'pointer'
     },
     input: {
-        height: 40
+        flex: 1,
+        marginRight: 2
     },
-    container: {
+    box: {
         position: 'fixed',
          borderRadius: 3,
         padding: 1.6,
@@ -18,6 +19,17 @@ const styles = {
         top: 35,
         width: '100%',
         textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    container: {
+        display: 'flex',
+        alignItems: 'center',
+        width: 350,
+        paddingRight: 12
+    },
+    favoriter: {
+        cursor: 'pointer'
     }
 }
 
@@ -25,43 +37,61 @@ type Props = {
     searchTerm: string;
     handleSearch: React.ChangeEventHandler<HTMLInputElement>;
     eraseSearch: () => any;
+    isFilteredByFavorite: boolean;
+    setFilterByFavorite: () => any;
 }
-const Search: React.FC<Props> = ({ searchTerm, handleSearch, eraseSearch }) => {
+const Search: React.FC<Props> = ({ searchTerm,
+                                     handleSearch,
+                                     eraseSearch,
+                                     isFilteredByFavorite = false,
+                                     setFilterByFavorite}) => {
 
     const theme = useTheme();
     return (
         <Box
             component="form"
             sx={{
-                '& > :not(style)': { mb: 1, width: '35ch' },
-                ...styles.container,
+                ...styles.box,
                 background: theme.palette.background.default
             }}
             noValidate
             autoComplete="off"
         >
-            <TextField
-                id="outlined-basic"
-                placeholder="by name, comics, stories, series"
-                label="Search"
-                variant="outlined"
-                color="secondary"
-                sx={styles.input}
-                value={searchTerm}
-                onChange={handleSearch}
-                InputProps={{
-                   endAdornment: (
-                       <InputAdornment position="end" sx={styles.endAdorment}>
-                           {searchTerm
-                               ?
-                               <Close onClick={() => eraseSearch()}/>
-                               :
-                               <SearchIcon/>
-                           }
-                       </InputAdornment>
-                   ),
-                }}
-            />
+            <div style={styles.container}>
+                <TextField
+                    id="outlined-basic"
+                    placeholder="by name, comics, stories, series"
+                    label="Search"
+                    variant="outlined"
+                    color="secondary"
+                    sx={styles.input}
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end" sx={styles.endAdorment}>
+                                {searchTerm
+                                    ?
+                                    <Close onClick={() => eraseSearch()}/>
+                                    :
+                                    <SearchIcon/>
+                                }
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <div style={styles.favoriter} onClick={setFilterByFavorite}>
+                    <Tooltip title={`${isFilteredByFavorite ? `Unfilter`: `Filter`} by Favorites`}>
+                        { isFilteredByFavorite ?
+                            <Star color="secondary"/>
+                            :
+                            <StarBorderOutlined />
+                        }
+                    </Tooltip>
+                </div>
+            </div>
+
         </Box>
     )
 }

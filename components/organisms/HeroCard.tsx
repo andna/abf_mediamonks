@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Hero} from "../../types/Hero";
 import {
     Card, Button, CardActions,
-    CardContent, Typography, Avatar, Tooltip, useTheme,
+    CardContent, Typography, Avatar, Tooltip, useTheme, Grid,
 } from "@mui/material";
 import HeroExtraInfo from "../molecules/HeroExtraInfo";
 import Link from 'next/link'
@@ -10,16 +10,18 @@ import colors from "../atoms/colors";
 import {ExtraInfo} from "../../types/ExtraInfo";
 import {InnerData} from "../../types/InnerData";
 import HeroLinks from "../molecules/HeroLinks";
-import {LibraryBooks, MenuBook, Tv} from "@mui/icons-material";
+import {Close, Delete, DeleteOutline, LibraryBooks, MenuBook, Star, StarBorderOutlined, Tv} from "@mui/icons-material";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import hid from "../../pages/heroes/[hid]";
 
 type Props = {
     hero: Hero;
     isPage?: boolean;
+    isFilteredByFavorites: boolean;
 }
 
 
-const HeroCard: React.FC<Props> = ({hero, isPage = null}) => {
+const HeroCard: React.FC<Props> = ({hero, isPage = null, isFilteredByFavorites}) => {
 
     const theme = useTheme();
     const notFoundThumb = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available';
@@ -94,6 +96,17 @@ const HeroCard: React.FC<Props> = ({hero, isPage = null}) => {
             width: '100%',
             display: 'block',
             textDecoration: 'underline'
+        },
+        favoriter: {
+            cursor: 'pointer'
+        },
+        hide: {
+            display: 'none'
+        },
+        deleters: {
+            marginRight: 1,
+            opacity: 0.2,
+            cursor: 'pointer'
         }
     }
 
@@ -124,94 +137,132 @@ const HeroCard: React.FC<Props> = ({hero, isPage = null}) => {
         info.items = heroInfo.items;
     });
 
-    return <Card sx={isPage ? styles.cardPage : styles.card}>
-        <CardContent sx={isPage ? styles.cardContent : styles.cardContent}>
-            {isPage && heroThumbnailProp.src ?
-                <a href={heroThumbnailProp.src} target="_blank" rel="noreferrer">
-                    <img
-                        height="200"
-                        src={heroThumbnailProp.src}
-                        alt="survey img"
-                        style={styles.avatarPage}
-                    />
-                </a>
-                :
-                <Avatar alt={hero.name}
-                                    sx={styles.avatar}
-                                    {...heroThumbnailProp}
-                >
-                    {!heroThumbnailProp.src && hero.name.slice(0, 2)}
-                </Avatar>
-            }
-            <div style={isPage ? styles.nameContainerPage : styles.nameContainer}>
+    const [isFavorite, setIsFavorite] = useState<boolean>();
+    const [isDeleted, setIsDeleted] = useState<boolean>();
+    const [startedDelete, setStartedDelete] = useState<boolean>();
 
-                <Typography variant={isPage ? 'h5' : 'h6'}
-                            sx={heroName.length < 16 ? styles.name : styles.nameSmall}
-                            color={isPage ? "secondary" : "default"}
-                >
-                    {heroName}
-                </Typography>
-                <Typography variant={'caption'}
-                            sx={styles.subName}>
-                    {heroSubName}
-                </Typography>
-                {isPage &&
-                    <Typography variant={'caption'}
-                                sx={styles.description}>
-                        {hero.description}
-                    </Typography>
-                }
-            </div>
-            {!isPage &&
-                <Tooltip title={wikiLink ?
-                    `Go to ${hero.name}'s Wiki`
-                    :
-                    `${hero.name} has no Wiki`
-                } placement="top">
-                    <a href={wikiLink}
-                       style={{ opacity: wikiLink ? 1 : 0.2 }}
-                       target="_blank" rel="noreferrer">↗️</a>
-                </Tooltip>
-            }
+    const setAsFavorite = () => {
+        const newFavorite = !isFavorite;
+        localStorage.setItem(`hero#${hero.id}`, newFavorite ? 'true' : 'false');
+        setIsFavorite(newFavorite);
+    }
 
-        </CardContent>
+    const setDeleted = () => {
+        localStorage.setItem(`deleted-hero#${hero.id}`, 'true');
+        setIsDeleted(true)
+    }
 
-        {isPage ?
-            <CardContent>
-                <Typography variant={'caption'}>
-                    {wikiLink ?
-                        <a style={styles.comicslink}
-                           href={wikiLink} target="_blank" rel="noreferrer">
-                            Go to Wiki
-                        </a>
-                        :
-                        <p style={{textAlign: 'center'}}>Has no wiki.</p>
-                    }
-                </Typography>
-                <Typography variant={'caption'}
-                            sx={styles.comicslink}>
-                    <a href={comicsLink} target="_blank" rel="noreferrer" >
-                        Go to Comics Page
+    useEffect(() => {
+        setIsFavorite(localStorage.getItem(`hero#${hero.id}`) === 'true');setIsDeleted(localStorage.getItem(`deleted-hero#${hero.id}`) === 'true');
+        setIsDeleted(localStorage.getItem(`deleted-hero#${hero.id}`) === 'true');
+
+    }, []);
+
+    return <Grid key={hero.id} item sx={{...(((isFilteredByFavorites && !isFavorite) || isDeleted) && styles.hide)}}>
+            <Card sx={isPage ? styles.cardPage : styles.card}>
+            <CardContent sx={isPage ? styles.cardContent : styles.cardContent}>
+                {isPage && heroThumbnailProp.src ?
+                    <a href={heroThumbnailProp.src} target="_blank" rel="noreferrer">
+                        <img
+                            height="200"
+                            src={heroThumbnailProp.src}
+                            alt="survey img"
+                            style={styles.avatarPage}
+                        />
                     </a>
-                </Typography>
-                <HeroLinks extraInfo={extraInfo}/>
-            </CardContent>
-            :
-            <CardActions>
-                <div>
-                    <HeroExtraInfo extraInfo={extraInfo} hero={hero}/>
+                    :
+                    <Avatar alt={hero.name}
+                                        sx={styles.avatar}
+                                        {...heroThumbnailProp}
+                    >
+                        {!heroThumbnailProp.src && hero.name.slice(0, 2)}
+                    </Avatar>
+                }
+                <div style={isPage ? styles.nameContainerPage : styles.nameContainer}>
+
+                    <Typography variant={isPage ? 'h5' : 'h6'}
+                                sx={heroName.length < 16 ? styles.name : styles.nameSmall}
+                                color={isPage ? "secondary" : "default"}
+                    >
+                        {heroName}
+                    </Typography>
+                    <Typography variant={'caption'}
+                                sx={styles.subName}>
+                        {heroSubName}
+                    </Typography>
+                    {isPage &&
+                        <Typography variant={'caption'}
+                                    sx={styles.description}>
+                            {hero.description}
+                        </Typography>
+                    }
+                </div>
+                <div style={styles.favoriter} onClick={setAsFavorite}>
+                    <Tooltip title={`${isFavorite ? `Unset`: `Set`} as Favorite`}>
+                        { isFavorite ?
+                            <Star color="secondary"/>
+                            :
+                            <StarBorderOutlined />
+                        }
+                    </Tooltip>
+
                 </div>
 
-                <Link href={`/heroes/${hero.id}`}>
-                    <Button variant="contained"
-                            sx={{marginLeft: "auto",}}
-                    >
-                        Details
-                    </Button>
-                </Link>
-            </CardActions>
-        }
-    </Card>
+            </CardContent>
+
+            {isPage ?
+                <CardContent>
+                    <Typography variant={'caption'}>
+                        {wikiLink ?
+                            <a style={styles.comicslink}
+                               href={wikiLink} target="_blank" rel="noreferrer">
+                                Go to Wiki
+                            </a>
+                            :
+                            <p style={{textAlign: 'center'}}>Has no wiki.</p>
+                        }
+                    </Typography>
+                    <Typography variant={'caption'}
+                                sx={styles.comicslink}>
+                        <a href={comicsLink} target="_blank" rel="noreferrer" >
+                            Go to Comics Page
+                        </a>
+                    </Typography>
+                    <HeroLinks extraInfo={extraInfo}/>
+                </CardContent>
+                :
+                <CardActions>
+                    <div>
+                        <HeroExtraInfo extraInfo={extraInfo} hero={hero}/>
+                    </div>
+
+                    <div style={{marginLeft: "auto", display: 'flex', alignItems: 'center'}}>
+
+                        {startedDelete ? <>
+
+                                <Tooltip title="Don't delete">
+                                        <Close sx={styles.deleters} onClick={() => setStartedDelete(false)}/>
+                                </Tooltip>
+                                <Tooltip title="Are you sure about Deleting them?">
+                                    <Delete sx={styles.deleters} onClick={() => setDeleted()}/>
+                                </Tooltip>
+                             </>
+                            :
+                            <Tooltip title="Delete this hero?">
+                                <DeleteOutline sx={styles.deleters} onClick={() => setStartedDelete(true)}/>
+                            </Tooltip>
+                        }
+                        <Link href={`/heroes/${hero.id}`}>
+                            <Button variant="contained"
+                            >
+                                Details
+                            </Button>
+                        </Link>
+                    </div>
+                </CardActions>
+            }
+        </Card>
+    </Grid>
 }
 
 export default HeroCard;
